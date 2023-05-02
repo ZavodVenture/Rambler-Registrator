@@ -39,7 +39,6 @@ def worker(name):
         options = Options()
         options.add_experimental_option('excludeSwitches', ['enable-logging', 'enable-automation'])
         options.add_argument('--disable-notifications')
-        options.add_argument('--headless=new')
         options.add_extension('extension.crx')
         driver = webdriver.Chrome(options=options)
         driver.maximize_window()
@@ -121,7 +120,7 @@ def worker(name):
 
         driver.find_element(By.XPATH, '//*[@id="__next"]/div/div/div[2]/footer/div/a').click()
         driver.switch_to.default_content()
-        sleep(1)
+        sleep(5)
 
         driver.get('https://mail.rambler.ru/settings/mailapps')
         try:
