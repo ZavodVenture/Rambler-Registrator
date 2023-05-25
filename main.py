@@ -37,8 +37,8 @@ def worker(name):
         tag(name, 'запуск профиля...')
 
         options = Options()
-        options.add_experimental_option('excludeSwitches', ['enable-logging', 'enable-automation'])
         options.add_argument('--disable-notifications')
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_extension('extension.crx')
         driver = webdriver.Chrome(options=options)
         driver.maximize_window()
@@ -89,7 +89,7 @@ def worker(name):
                     continue
 
             sleep(1)
-            WebDriverWait(driver, 20).until(ec.element_to_be_clickable((By.XPATH, '//*[@id="reg_login"]'))).send_keys(
+            WebDriverWait(driver, 20).until(ec.element_to_be_clickable((By.XPATH, '//*[@id="login"]'))).send_keys(
                 nickname)
             try:
                 WebDriverWait(driver, 2).until(ec.presence_of_element_located(
@@ -100,11 +100,11 @@ def worker(name):
 
         password = ''.join([choice(ascii_letters + digits) for i in range(20)]) + choice(digits)
         credentials += password + '\n'
-        el = WebDriverWait(driver, 20).until(ec.presence_of_element_located((By.XPATH, '//*[@id="reg_new_password"]')))
+        el = WebDriverWait(driver, 20).until(ec.presence_of_element_located((By.XPATH, '//*[@id="newPassword"]')))
         el.click()
         el.send_keys(password)
         el = WebDriverWait(driver, 20).until(
-            ec.presence_of_element_located((By.XPATH, '//*[@id="reg_confirm_password"]')))
+            ec.presence_of_element_located((By.XPATH, '//*[@id="confirmPassword"]')))
         el.click()
         el.send_keys(password)
 
@@ -113,14 +113,15 @@ def worker(name):
         driver.find_elements(By.XPATH,
                                          '//*[@id="__next"]/div/div/div[2]/div/div/div/div[1]/form/section[4]/div/div/div[1]/div/div[2]/div/div/div[1]/div/div/div')[0].click()
         answer = str(randint(11111, 99999))
-        driver.find_element(By.XPATH, '//*[@id="reg_answer"]').send_keys(answer)
+        driver.find_element(By.XPATH, '//*[@id="answer"]').send_keys(answer)
 
         WebDriverWait(driver, 999).until(ec.element_to_be_clickable(
             (By.XPATH, '//*[@id="__next"]/div/div/div[2]/div/div/div/div[1]/form/button'))).click()
 
+        sleep(5)
         driver.find_element(By.XPATH, '//*[@id="__next"]/div/div/div[2]/footer/div/a').click()
         driver.switch_to.default_content()
-        sleep(5)
+        sleep(1)
 
         driver.get('https://mail.rambler.ru/settings/mailapps')
         try:
@@ -157,10 +158,10 @@ def worker(name):
                 busy_files = True
                 break
 
-        with open('credentials.txt', 'a', encoding='utf-8') as file:
+        with open('../credentials.txt', 'a', encoding='utf-8') as file:
             file.write(credentials)
             file.close()
-        with open('other_data.txt', 'a', encoding='utf-8') as file:
+        with open('../other_data.txt', 'a', encoding='utf-8') as file:
             file.write(other_data)
             file.close()
         busy_files = False
