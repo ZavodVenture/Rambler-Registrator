@@ -1,6 +1,7 @@
 from random import randint, choice
 import requests
 from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -36,11 +37,13 @@ def worker(name):
 
         tag(name, 'запуск профиля...')
 
+        cap = DesiredCapabilities().CHROME
+        cap["pageLoadStrategy"] = "none"
         options = Options()
         options.add_experimental_option("excludeSwitches", ["enable-automation", 'enable-logging'])
         options.add_argument('--disable-notifications')
         options.add_extension('extension.crx')
-        driver = webdriver.Chrome(options=options)
+        driver = webdriver.Chrome(options=options, desired_capabilities=cap)
         driver.maximize_window()
 
         tag(name, 'регистрация...')
@@ -62,10 +65,11 @@ def worker(name):
         sleep(0.5)
 
         driver.find_element(By.XPATH, '//*[@id="root"]/div/div[2]/div[3]/div[2]/div/div[3]/div[2]').click()
-        sleep(2)
+        sleep(3)
 
         driver.execute_script(
             "document.getElementsByClassName('ant-radio-button-wrapper sc-1kl07qn bPqmGH')[0].click()")
+        sleep(1)
 
         # Rambler
         driver.get('https://mail.rambler.ru/')
