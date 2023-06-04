@@ -180,10 +180,10 @@ def worker(name):
                 busy_files = True
                 break
 
-        with open('../credentials.txt', 'a', encoding='utf-8') as file:
+        with open('credentials.txt', 'a', encoding='utf-8') as file:
             file.write(credentials)
             file.close()
-        with open('../other_data.txt', 'a', encoding='utf-8') as file:
+        with open('other_data.txt', 'a', encoding='utf-8') as file:
             file.write(other_data)
             file.close()
         busy_files = False
@@ -196,7 +196,6 @@ def worker(name):
 if __name__ == '__main__':
     accounts_number = int(config['settings']['accounts_number'])
     threads_number = int(config['settings']['threads_number'])
-
     accounts = [Thread(target=worker, args=(number,)) for number in range(accounts_number)]
     groups = chunks(accounts, threads_number)
 
