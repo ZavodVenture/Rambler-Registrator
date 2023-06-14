@@ -1,3 +1,4 @@
+import random
 from random import randint, choice
 import requests
 from selenium import webdriver
@@ -30,6 +31,18 @@ def tag(name: str, value: str):
     print(f"[{datetime.now().strftime('%H:%M:%S')}] Аккаунт {name}: " + value)
 
 
+def get_nickname():
+    suffixes = ['mister', 'miss', 'doctor', 'lady', 'sir', 'king', 'queen', 'prince', 'princess', 'lord', 'captain', 'major', 'professor', 'master', 'angel', 'devil', 'knight', 'wizard', 'ninja', 'pirate', 'ghost', 'shadow', 'silver', 'gold', 'diamond', 'ruby', 'emerald', 'sapphire', 'crystal', 'pearl', 'red', 'blue', 'green', 'yellow', 'black', 'white', 'pink', 'purple', 'orange', 'brown', 'happy', 'sad', 'angry', 'funny', 'crazy', 'smart', 'cool', 'cute', 'sweet', 'brave', 'super', 'mega', 'ultra', 'turbo', 'hyper', 'nano', 'micro', 'macro', 'giga', 'tera', 'star', 'moon', 'sun', 'sky', 'sea', 'land', 'fire', 'ice', 'wind', 'earth']
+    prefixes = ['umbrella', 'sun', 'butterfly', 'kinesis', 'jameson', 'star', 'moon', 'flower', 'dragon', 'fox', 'storm', 'fire', 'ice', 'wind', 'earth', 'water', 'light', 'dark', 'magic', 'power', 'hunter', 'slayer', 'runner', 'rider', 'dancer', 'singer', 'writer', 'painter', 'gamer', 'maker', 'cat', 'dog', 'bird', 'fish', 'lion', 'tiger', 'bear', 'wolf', 'fox', 'rabbit', 'cake', 'cookie', 'candy', 'pie', 'coffee', 'tea', 'juice', 'soda', 'milk', 'water', 'man', 'woman', 'boy', 'girl', 'kid', 'teen', 'adult', 'hero', 'villain', 'friend', 'enemy', 'lover', 'hater', 'leader', 'follower', 'teacher', 'student', 'worker', 'player', 'maker']
+
+    suffix = random.choice(suffixes)
+    prefix = random.choice(prefixes)
+    underline = random.choice(['_', '.', ''])
+    n = random.randint(11, 99)
+
+    return f'{suffix}{underline}{prefix}{n}'
+
+
 def worker(name):
     try:
         credentials = ''
@@ -55,21 +68,17 @@ def worker(name):
             config['settings']['cap_monster_api'])
         driver.find_element(By.XPATH, '//*[@id="root"]/div/div[2]/div[1]/div[1]/div[2]/button').click()
 
-        driver.find_element(By.XPATH, '//*[@id="root"]/div/div[2]/div[3]/div[2]/div/div[1]/div[1]/div/button').click()
-        driver.find_element(By.XPATH, '//*[@id="root"]/div/div[2]/div[3]/div[2]/div/div[5]/div[1]/div/button').click()
-        driver.find_element(By.XPATH, '//*[@id="root"]/div/div[2]/div[3]/div[2]/div/div[7]/div[1]/div/button').click()
-        driver.find_element(By.XPATH, '//*[@id="root"]/div/div[2]/div[3]/div[2]/div/div[2]/div/div/button').click()
-        driver.find_element(By.XPATH, '//*[@id="root"]/div/div[2]/div[3]/div[2]/div/div[4]/div/div/button').click()
-        driver.find_element(By.XPATH, '//*[@id="root"]/div/div[2]/div[3]/div[2]/div/div[6]/div[1]/div/button').click()
-        driver.find_element(By.XPATH, '//*[@id="root"]/div/div[2]/div[3]/div[2]/div/div[8]/div/div/button').click()
+        driver.find_element(By.XPATH, '//*[@id="root"]/div/div[2]/div[3]/div[2]/div/div[1]/label/span[1]/input').click()
+        driver.find_element(By.XPATH, '//*[@id="root"]/div/div[2]/div[3]/div[2]/div/div[2]/label/span[1]/input').click()
+        driver.find_element(By.XPATH, '//*[@id="root"]/div/div[2]/div[3]/div[2]/div/div[3]/label/span[1]/input').click()
+        driver.find_element(By.XPATH, '//*[@id="root"]/div/div[2]/div[3]/div[2]/div/div[5]/label/span[1]/input').click()
+        driver.find_element(By.XPATH, '//*[@id="root"]/div/div[2]/div[3]/div[2]/div/div[6]/label/span[1]/input').click()
+        driver.find_element(By.XPATH, '//*[@id="root"]/div/div[2]/div[3]/div[2]/div/div[7]/label/span[1]/input').click()
+        driver.find_element(By.XPATH, '//*[@id="root"]/div/div[2]/div[3]/div[2]/div/div[8]/label/span[1]/input').click()
+
+        driver.find_element(By.XPATH, '//*[@id="root"]/div/div[2]/div[3]/div[2]/div/div[4]/div/label[1]').click()
+
         sleep(0.5)
-
-        driver.find_element(By.XPATH, '//*[@id="root"]/div/div[2]/div[3]/div[2]/div/div[3]/div[2]').click()
-        sleep(3)
-
-        driver.execute_script(
-            "document.getElementsByClassName('ant-radio-button-wrapper sc-1kl07qn bPqmGH')[0].click()")
-        sleep(1)
 
         # Rambler
         driver.get('https://mail.rambler.ru/')
@@ -81,19 +90,8 @@ def worker(name):
 
         sleep(5)
 
-        start = time()
         while 1:
-            if time() - start >= 30:
-                raise
-            try:
-                nickname = requests.post('https://rustxt.ru/api/index.php',
-                                         data={'method': 'getNickName', 'count_result': 1, 'len_nick_min': 7,
-                                               'len_nick_max': 10}).json()[0] + str(randint(111, 999))
-            except:
-                continue
-            else:
-                if not nickname:
-                    continue
+            nickname = get_nickname()
 
             sleep(1)
             try:
